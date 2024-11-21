@@ -94,6 +94,6 @@ def mostrar_informacion_alumno():
     with st.container(border=True):
         st.markdown('**Legajo:** 59268')
         st.markdown('**Nombre:** Córdoba Pedro Josué')
-        st.markdown('**Comisión:** C2')
+        st.markdown('**Comisión:** 2')
 
 mostrar_informacion_alumno()
