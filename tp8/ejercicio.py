@@ -5,7 +5,29 @@ import matplotlib.pyplot as plt
 
 st.set_page_config(page_title="TP8", layout="wide")
 
-# url = 'https://tp8-59268.streamlit.app/'
+# Estilos CSS para los contenedores y texto
+st.markdown("""
+<style>
+    .border-container {
+        border: 2px solid #ddd;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 20px;
+        background-color: #f9f9f9;
+    }
+    .metric-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        font-size: 18px; /* Aumentar el tamaño de la letra */
+    }
+    .metric-container div {
+        font-size: 20px; /* Tamaño específico para las métricas */
+        font-weight: bold;
+    }
+</style>
+""", unsafe_allow_html=True)
 
 def generar_grafico_ventas(datos_producto, nombre_producto):
     # Agrupar las ventas sumando las unidades vendidas por año y mes
@@ -30,7 +52,6 @@ def generar_grafico_ventas(datos_producto, nombre_producto):
     eje.set_ylabel('Unidades Vendidas', fontsize=10)
     eje.set_ylim(0)
     eje.grid(which='major', axis='both', linestyle='--', color='gray', alpha=0.7)
-    eje.legend(title='Producto', fontsize=10)
 
     # Líneas verticales continuas para dividir cada mes
     etiquetas_x = []
@@ -38,12 +59,12 @@ def generar_grafico_ventas(datos_producto, nombre_producto):
     for idx, fila in enumerate(ventas_mensuales.itertuples()):
         etiquetas_x.append(f"{fila.Año}-{fila.Mes:02d}")
         posiciones_x.append(idx)
-        eje.axvline(x=idx, color='black', linestyle='--', linewidth=0.2, alpha=0.6)  # Línea negra para cada mes
+        eje.axvline(x=idx, color='black', linestyle='-', linewidth=0.1, alpha=0.6)  # Línea negra para cada mes
 
     # Líneas horizontales continuas para cada 10,000 unidades
     max_y = int(max(valores_y)) + 10000  # Escala máxima ajustada
     for y_value in range(0, max_y, 10000):  # Intervalos de 10,000 unidades
-        eje.axhline(y=y_value, color='black', linestyle='--', linewidth=0.2, alpha=0.6)
+        eje.axhline(y=y_value, color='black', linestyle='-', linewidth=0.1, alpha=0.6)
 
     # Configurar etiquetas del eje X
     eje.set_xticks(posiciones_x[::12])  # Mostrar solo una etiqueta por año (cada enero)
@@ -51,6 +72,7 @@ def generar_grafico_ventas(datos_producto, nombre_producto):
     plt.tight_layout()
 
     return figura
+
 
 # Configurar la carga de archivos desde la barra lateral
 st.sidebar.title("Carga archivo de datos")
@@ -67,17 +89,7 @@ if archivo:
         st.header(f"Datos de la Sucursal: {sucursal_actual}")
     else:
         datos_filtrados = datos
-        st.markdown("""
-        <div style="
-            font-size: 38px; 
-            font-weight: bold;  
-            color: #333; 
-            padding: 10px 0; 
-            border-bottom: 2px solid #ddd; 
-            margin-bottom: 20px;">
-            Datos de Todas las Sucursales
-        </div>
-        """, unsafe_allow_html=True)
+        st.header("Datos de Todas las Sucursales")
 
     productos_unicos = datos_filtrados['Producto'].drop_duplicates().values
 
@@ -121,10 +133,11 @@ if archivo:
             st.pyplot(grafico)
 
 else:
-    def mostrar_info_usuario():
+    def mostrar_informacion_alumno():
         st.write("**Legajo:** 59268")
-        st.write("**Nombre:** Córdoba Pedro")
+        st.write("**Nombre:** Cordoba Pedro")
         st.write("**Comisión:** C2")
 
     st.subheader("Sube un archivo CSV desde la barra lateral.")
-    mostrar_info_usuario()
+    mostrar_informacion_alumno()
+
